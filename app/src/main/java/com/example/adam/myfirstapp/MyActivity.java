@@ -38,6 +38,8 @@ public class MyActivity extends ActionBarActivity {
         drawView.invalidate();
         drawView.drawLine = true;
 
+        setTitle("HSE-Mapping Development Version");
+
     }
 
 
