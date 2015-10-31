@@ -27,7 +27,9 @@ public class mapPoint {
         pnt.clear();
     }
 
-    public ArrayList<ArrayList<Integer>> getNeighbors(int x, int y) {
+    public ArrayList<ArrayList<Integer>> getNeighbors(ArrayList<Integer> node) {
+        int x = node.get(0);
+        int y = node.get(1);
         ArrayList<Integer> pnt = new ArrayList<>();
         ArrayList<ArrayList<Integer>> nbors = new ArrayList<>();
         pnt.add(x + 1);

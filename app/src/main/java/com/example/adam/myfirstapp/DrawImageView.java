@@ -35,7 +35,7 @@ public class DrawImageView extends ImageView {
         currentPaint.setStyle(Paint.Style.STROKE);
         currentPaint.setStrokeJoin(Paint.Join.ROUND);
         currentPaint.setStrokeCap(Paint.Cap.ROUND);
-        currentPaint.setStrokeWidth(20);
+        currentPaint.setStrokeWidth(5);
     }
 
     @Override

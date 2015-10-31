@@ -4,8 +4,12 @@ import android.graphics.Point;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
@@ -30,15 +34,70 @@ public class MyActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
         DrawImageView drawView = (DrawImageView) findViewById(R.id.view);
+        final TextView t=(TextView)findViewById(R.id.textView);
 
         drawView.x = 20;
         drawView.y = 20;
         drawView.x2 = 200;
         drawView.y2 = 200;
         drawView.invalidate();
-        drawView.drawLine = true;
+        //drawView.drawLine = true;
 
         setTitle("HSE-Mapping Development Version");
+
+
+        //************START SPINNER***************************************************
+        Spinner startSpinner = (Spinner) findViewById(R.id.startSpinner);
+
+        String[] startItems = new String[] { "A104", "A105", "A106", "A107", "A108" };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, startItems);
+
+        startSpinner.setAdapter(adapter);
+
+        startSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String roomNum = (String) parent.getItemAtPosition(position);
+                t.setText("Item Selected: " + roomNum);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        //*********************************************************************************************
+
+        //***********************END SPINNER***********************************************************
+
+        Spinner endSpinner = (Spinner) findViewById(R.id.endSpinner);
+
+        String[] endItems = new String[] { "A104", "A105", "A106", "A107", "A108" };
+
+        ArrayAdapter<String> endAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, endItems);
+
+        endSpinner.setAdapter(endAdapter);
+
+        endSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String roomNum = (String) parent.getItemAtPosition(position);
+                t.setText("Item Selected: " + roomNum);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        //*******************************************************************************************
 
     }
 
