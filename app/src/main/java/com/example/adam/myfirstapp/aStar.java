@@ -38,7 +38,7 @@ public class aStar {
             openList.remove(currentNode);
 
             for (ArrayList<Integer> pnt : closedList) {
-                ArrayList<Integer> point = null;
+                ArrayList<Integer> point = new ArrayList<>();
                 point.add(pnt.get(0));
                 point.add(pnt.get(1));
                 if (point == endPoint) {
@@ -86,7 +86,7 @@ public class aStar {
     }
 
     public ArrayList<Integer> getParent(ArrayList<Integer> node) {
-        ArrayList<Integer> result = null;
+        ArrayList<Integer> result = new ArrayList<>();
         for (ArrayList<ArrayList<Integer>> parentPair : parentList) {
             if (parentPair.get(0) == node) {
                 result = parentPair.get(1);

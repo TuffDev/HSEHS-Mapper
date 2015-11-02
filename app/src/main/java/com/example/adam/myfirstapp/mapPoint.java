@@ -9,21 +9,18 @@ import java.util.ArrayList;
 public class mapPoint {
     // make classes to find neighbors
 
-    public int[] startPoint = new int[2];
-    public int[] endPoint = new int[2];
     public ArrayList<ArrayList<Integer>> walkableCoords = new ArrayList<>();
-    
-    public void addLineToWalkable(ArrayList<ArrayList<Integer>> coordPath){
-        for (ArrayList<Integer> element : coordPath) {
-            walkableCoords.add(element);
-        }
-    }
+    public ArrayList<String> rooms = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> roomCoords = new ArrayList<>();
 
-    public void addPoint(int x, int y) {
+
+    public void addPoint(int x, int y, String room) {
         ArrayList<Integer> pnt = new ArrayList<>();
         pnt.add(x);
         pnt.add(y);
         walkableCoords.add(pnt);
+        rooms.add(room);
+        roomCoords.add(pnt);
         pnt.clear();
     }
 
@@ -56,5 +53,62 @@ public class mapPoint {
             nbors.add(pnt);
         }
             return nbors;
+    }
+
+    public void addLineArray(int x1, int x2, int y1, int y2) { // adds every point on a line to a list
+        if (x1 == x2) {
+            int i = 0;
+
+            if (y1 > y2) {
+                while (i < Math.abs(y1 - y2)) {
+                    ArrayList<Integer> pointArray = new ArrayList<>();
+                    pointArray.add(x1);
+                    pointArray.add(y1 - i);
+                    walkableCoords.add(pointArray);
+                    pointArray.clear();
+                    i++;
+                }
+
+            }
+
+            else if (y2 > y1) {
+                while (i < Math.abs(y1 - y2)) {
+                    ArrayList<Integer> pointArray = new ArrayList<>();
+                    pointArray.add(x1);
+                    pointArray.add(y2 - i);
+                    walkableCoords.add(pointArray);
+                    pointArray.clear();
+                    i++;
+                }
+            }
+
+        }
+
+        else if (y1 == y2) {
+            int i = 0;
+
+            if (x1 > x2) {
+                while (i < Math.abs(y1 - y2)) {
+                    ArrayList<Integer> pointArray = new ArrayList<>();
+                    pointArray.add(x1 - i);
+                    pointArray.add(y1);
+                    walkableCoords.add(pointArray);
+                    pointArray.clear();
+                    i++;
+                }
+
+            }
+
+            else if (y2 > y1) {
+                while (i < Math.abs(y1 - y2)) {
+                    ArrayList<Integer> pointArray = new ArrayList<>();
+                    pointArray.add(x1 - i);
+                    pointArray.add(y1);
+                    walkableCoords.add(pointArray);
+                    pointArray.clear();
+                    i++;
+                }
+            }
+        }
     }
 }

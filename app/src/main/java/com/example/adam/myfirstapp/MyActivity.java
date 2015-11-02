@@ -25,23 +25,30 @@ import android.app.Application;
 import android.app.Activity;
 import android.content.res.Resources;
 
+import java.util.ArrayList;
+
 public class MyActivity extends ActionBarActivity {
 
-    Context ctx;
-
+    public Context ctx;
+    public ArrayList<Integer> startPoint = new ArrayList<>();
+    public ArrayList<Integer> endPoint = new ArrayList<>();
+    public mapPoint mP = new mapPoint();
+    public boolean endPointSet = false;
+    public boolean startPointSet = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        DrawImageView drawView = (DrawImageView) findViewById(R.id.view);
         final TextView t=(TextView)findViewById(R.id.textView);
 
-        drawView.x = 20;
-        drawView.y = 20;
-        drawView.x2 = 200;
-        drawView.y2 = 200;
-        drawView.invalidate();
-        //drawView.drawLine = true;
+        mP.addLineArray(57, 57, 29, 353);
+        mP.addLineArray(57, 312, 63, 63);
+        mP.addPoint(56, 47, "A107");
+        mP.addPoint(56, 56, "A106");
+        mP.addPoint(56, 79, "A104");
+        mP.addPoint(77, 62, "A105");
+        mP.addPoint(77, 64, "A108");
+
 
         setTitle("HSE-Mapping Development Version");
 
@@ -61,7 +68,12 @@ public class MyActivity extends ActionBarActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String roomNum = (String) parent.getItemAtPosition(position);
                 t.setText("Item Selected: " + roomNum);
-
+                int roomIndex = mP.rooms.indexOf(roomNum);
+                startPointSet = true;
+                startPoint = mP.roomCoords.get(roomIndex);
+                if (endPointSet) {
+                    mapPath();
+                }
             }
 
             @Override
@@ -88,7 +100,12 @@ public class MyActivity extends ActionBarActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String roomNum = (String) parent.getItemAtPosition(position);
                 t.setText("Item Selected: " + roomNum);
-
+                int roomIndex = mP.rooms.indexOf(roomNum);
+                endPoint = mP.roomCoords.get(roomIndex);
+                endPointSet = true;
+                if (startPointSet) { //start Point is set
+                    mapPath();
+                }
             }
 
             @Override
@@ -136,5 +153,26 @@ public class MyActivity extends ActionBarActivity {
         Bitmap myBitmap = getMutableBitmap(ctx.getResources(), R.drawable.buildingdownstairsnob);
         t.setText("" + myBitmap.getWidth());
 
+    }
+
+    public void mapPath() {
+        aStar aS = new aStar();
+        TextView t=(TextView)findViewById(R.id.textView);
+        t.setText("mapPath() called");
+        aS.startPoint = startPoint;
+        aS.endPoint = endPoint;
+        aS.findShortestPath();
+        DrawImageView drawView = (DrawImageView) findViewById(R.id.view);
+        int i = 0;
+        while (i < aS.shortestPath.size()) {
+            ArrayList<Integer> pntA = aS.shortestPath.get(i);
+            ArrayList<Integer> pntB = aS.shortestPath.get(i++);
+            drawView.x = pntA.get(0);
+            drawView.y = pntA.get(1);
+            drawView.x2 = pntB.get(0);
+            drawView.y2 = pntB.get(1);
+            drawView.invalidate();
+            drawView.drawLine = true;
+        }
     }
 }
