@@ -90,7 +90,7 @@ public class MyActivity extends ActionBarActivity {
 
         String[] endItems = new String[] { "A104", "A105", "A106", "A107", "A108" };
 
-        ArrayAdapter<String> endAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> endAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, endItems);
 
         endSpinner.setAdapter(endAdapter);
@@ -102,9 +102,12 @@ public class MyActivity extends ActionBarActivity {
                 t.setText("Item Selected: " + roomNum);
                 int roomIndex = mP.rooms.indexOf(roomNum);
                 endPoint = mP.roomCoords.get(roomIndex);
+                //t.setText(" size " + mP.walkableCoords.get(20).get(0));
                 endPointSet = true;
                 if (startPointSet) { //start Point is set
                     mapPath();
+                    t.setText("x:" + startPoint.get(0) + " y: " + startPoint.get(1));
+                    //t.setText("x: " + startPoint.get(0) + "Y: " + startPoint.get(1));
                 }
             }
 
@@ -158,12 +161,13 @@ public class MyActivity extends ActionBarActivity {
     public void mapPath() {
         aStar aS = new aStar();
         TextView t=(TextView)findViewById(R.id.textView);
-        t.setText("mapPath() called");
+        t.setText("mapPath() called");                          //debug
         aS.startPoint = startPoint;
         aS.endPoint = endPoint;
         aS.findShortestPath();
         DrawImageView drawView = (DrawImageView) findViewById(R.id.view);
         int i = 0;
+        t.setText("length of path list " + mP.walkableCoords.size());
         while (i < aS.shortestPath.size()) {
             ArrayList<Integer> pntA = aS.shortestPath.get(i);
             ArrayList<Integer> pntB = aS.shortestPath.get(i++);

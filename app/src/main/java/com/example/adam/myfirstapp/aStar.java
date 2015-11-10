@@ -1,5 +1,7 @@
 package com.example.adam.myfirstapp;
 
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
 /**
@@ -49,7 +51,8 @@ public class aStar {
 
             mapPoint mp = new mapPoint();
             ArrayList<ArrayList<Integer>> nbors = mp.getNeighbors(currentNode);
-
+            TextView t=(TextView)findViewById(R.id.textView);
+            t.setText("mapPath() called");
             for (ArrayList<Integer> pnt : nbors) {
                 pnt.add(i);
                 int tentativeG = getGVal(currentNode);

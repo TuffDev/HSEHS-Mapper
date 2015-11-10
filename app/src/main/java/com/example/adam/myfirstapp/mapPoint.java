@@ -21,7 +21,6 @@ public class mapPoint {
         walkableCoords.add(pnt);
         rooms.add(room);
         roomCoords.add(pnt);
-        pnt.clear();
     }
 
     public ArrayList<ArrayList<Integer>> getNeighbors(ArrayList<Integer> node) {
@@ -34,19 +33,19 @@ public class mapPoint {
         if (walkableCoords.contains(pnt)) {
             nbors.add(pnt);
         }
-        pnt.clear();
+        //pnt.clear();
         pnt.add(x - 1);
         pnt.add(y);
         if (walkableCoords.contains(pnt)) {
             nbors.add(pnt);
         }
-        pnt.clear();
+        //pnt.clear();
         pnt.add(x);
         pnt.add(y + 1);
         if (walkableCoords.contains(pnt)) {
             nbors.add(pnt);
         }
-        pnt.clear();
+        //pnt.clear();
         pnt.add(x);
         pnt.add(y -1);
         if (walkableCoords.contains(pnt)) {
@@ -65,7 +64,7 @@ public class mapPoint {
                     pointArray.add(x1);
                     pointArray.add(y1 - i);
                     walkableCoords.add(pointArray);
-                    pointArray.clear();
+                   // pointArray.clear();
                     i++;
                 }
 
@@ -77,7 +76,7 @@ public class mapPoint {
                     pointArray.add(x1);
                     pointArray.add(y2 - i);
                     walkableCoords.add(pointArray);
-                    pointArray.clear();
+                   // pointArray.clear();
                     i++;
                 }
             }
@@ -93,7 +92,7 @@ public class mapPoint {
                     pointArray.add(x1 - i);
                     pointArray.add(y1);
                     walkableCoords.add(pointArray);
-                    pointArray.clear();
+                    //pointArray.clear();
                     i++;
                 }
 
@@ -105,7 +104,7 @@ public class mapPoint {
                     pointArray.add(x1 - i);
                     pointArray.add(y1);
                     walkableCoords.add(pointArray);
-                    pointArray.clear();
+                    //pointArray.clear();
                     i++;
                 }
             }
