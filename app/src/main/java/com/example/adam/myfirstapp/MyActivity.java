@@ -73,6 +73,14 @@ public class MyActivity extends ActionBarActivity {
                 startPoint = mP.roomCoords.get(roomIndex);
                 if (endPointSet) {
                     mapPath();
+                    /*
+                    ArrayList<Integer> pnt = new ArrayList<>();
+                    pnt.add(56);
+                    pnt.add(47);
+                    ArrayList<ArrayList<Integer>> nbors = new ArrayList<>();
+                    nbors = mP.getNeighbors(pnt);
+                    t.setText("Nbors x" + nbors.get(0).get(0) + "  y:" + nbors.get(0).get(1)); */
+
                 }
             }
 
@@ -102,12 +110,10 @@ public class MyActivity extends ActionBarActivity {
                 t.setText("Item Selected: " + roomNum);
                 int roomIndex = mP.rooms.indexOf(roomNum);
                 endPoint = mP.roomCoords.get(roomIndex);
-                //t.setText(" size " + mP.walkableCoords.get(20).get(0));
                 endPointSet = true;
                 if (startPointSet) { //start Point is set
                     mapPath();
-                    t.setText("x:" + startPoint.get(0) + " y: " + startPoint.get(1));
-                    //t.setText("x: " + startPoint.get(0) + "Y: " + startPoint.get(1));
+
                 }
             }
 
@@ -160,14 +166,19 @@ public class MyActivity extends ActionBarActivity {
 
     public void mapPath() {
         aStar aS = new aStar();
+        aS.mP = mP;
         TextView t=(TextView)findViewById(R.id.textView);
-        t.setText("mapPath() called");                          //debug
         aS.startPoint = startPoint;
         aS.endPoint = endPoint;
         aS.findShortestPath();
         DrawImageView drawView = (DrawImageView) findViewById(R.id.view);
         int i = 0;
-        t.setText("length of path list " + mP.walkableCoords.size());
+
+        ArrayList<Integer> pnt = new ArrayList<>();
+        pnt.add(aS.debugx);
+        pnt.add(aS.debugy);
+        ArrayList<ArrayList<Integer>> nbors = mP.getNeighbors(pnt);
+        t.setText("debugInt: " + aS.debugInt + " gVAl: " + aS.g + " end point: " + endPoint.get(0) + " , " + endPoint.get(1));
         while (i < aS.shortestPath.size()) {
             ArrayList<Integer> pntA = aS.shortestPath.get(i);
             ArrayList<Integer> pntB = aS.shortestPath.get(i++);
@@ -177,6 +188,8 @@ public class MyActivity extends ActionBarActivity {
             drawView.y2 = pntB.get(1);
             drawView.invalidate();
             drawView.drawLine = true;
+            i++;
+
         }
     }
 }

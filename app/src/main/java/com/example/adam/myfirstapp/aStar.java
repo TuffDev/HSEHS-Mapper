@@ -4,6 +4,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+
 /**
  * Created by root on 10/27/15.
  */
@@ -12,32 +13,42 @@ public class aStar {
     public ArrayList<Integer> startPoint = new ArrayList<>();
     public ArrayList<Integer> endPoint = new ArrayList<>();
     public ArrayList<ArrayList<ArrayList<Integer>>> parentList = new ArrayList<>();
-
+    public ArrayList<ArrayList<Integer>> nbors = new ArrayList<>();
+    public int i;                  //debug
+    public int g = 0;
+    public ArrayList<ArrayList<Integer>> openList = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> closedList = new ArrayList<>();
+    public ArrayList<Integer> debugPoint = new ArrayList<>();
+    public int debugInt = -999;
+    public int debugx = 0;
+    public int debugy = 0;
+    public mapPoint mP = new mapPoint();
 
     public void findShortestPath() {
-        ArrayList<ArrayList<Integer>> openList = new ArrayList<>();
-        ArrayList<ArrayList<Integer>> closedList = new ArrayList<>();
         boolean pointFound = false;
-        int i = 0;
+        i = 0;
 
         startPoint.add(0); // add G value to start point
         openList.add(startPoint);
-        while (!openList.isEmpty() && pointFound == false) {
+        while (!openList.isEmpty() /*&& !pointFound*/ && i < 30) {
             i++;
             ArrayList<Integer> lowest = new ArrayList<>();
             for (ArrayList<Integer> pnt : openList) {
                 if (lowest.isEmpty()) {
                     lowest = pnt;
+                    debugInt = 1;                   //DEBUG
                 }
 
                 else if (getFValue(pnt) < getFValue(lowest)) {
                     lowest = pnt;
+                    debugInt = 2;                  //DEBUG
                 }
             }
 
             ArrayList<Integer> currentNode = lowest;
             closedList.add(currentNode);
             openList.remove(currentNode);
+            debugInt = 3;
 
             for (ArrayList<Integer> pnt : closedList) {
                 ArrayList<Integer> point = new ArrayList<>();
@@ -45,25 +56,35 @@ public class aStar {
                 point.add(pnt.get(1));
                 if (point == endPoint) {
                     reconstructPathCoords(pnt);
+                    debugInt = 27;
                     pointFound = true;
                 }
             }
 
-            mapPoint mp = new mapPoint();
-            ArrayList<ArrayList<Integer>> nbors = mp.getNeighbors(currentNode);
-            TextView t=(TextView)findViewById(R.id.textView);
-            t.setText("mapPath() called");
+            ArrayList<Integer> homePoint = new ArrayList<>();
+            homePoint.add(currentNode.get(0));
+            homePoint.add(currentNode.get(1));
+            nbors = mP.getNeighbors(homePoint);
+
             for (ArrayList<Integer> pnt : nbors) {
+                debugInt = 6;
                 pnt.add(i);
                 int tentativeG = getGVal(currentNode);
                 if (closedList.contains(pnt) && tentativeG >= getGVal(pnt)) {
+                    debugInt = 5;
+                    //g++;
                     break;
                 }
 
                 if (!openList.contains(pnt) || tentativeG < getGVal(pnt)) {
                     setParent(pnt, currentNode);
                     openList.add(pnt);
+                    //g++;
+                    debugPoint = pnt;                   //DEBUG
+                    debugInt = i;
                 }
+                else debugInt = i;                  //DEBUG
+                g++;
             }
         }
     }

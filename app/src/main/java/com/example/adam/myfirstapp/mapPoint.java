@@ -33,19 +33,19 @@ public class mapPoint {
         if (walkableCoords.contains(pnt)) {
             nbors.add(pnt);
         }
-        //pnt.clear();
+        pnt.clear();
         pnt.add(x - 1);
         pnt.add(y);
         if (walkableCoords.contains(pnt)) {
             nbors.add(pnt);
         }
-        //pnt.clear();
+        pnt.clear();
         pnt.add(x);
         pnt.add(y + 1);
         if (walkableCoords.contains(pnt)) {
             nbors.add(pnt);
         }
-        //pnt.clear();
+        pnt.clear();
         pnt.add(x);
         pnt.add(y -1);
         if (walkableCoords.contains(pnt)) {
@@ -83,11 +83,11 @@ public class mapPoint {
 
         }
 
-        else if (y1 == y2) {
+        if (y1 == y2) { // the two y values must be the same
             int i = 0;
 
             if (x1 > x2) {
-                while (i < Math.abs(y1 - y2)) {
+                while (i < Math.abs(x1 - x2)) {
                     ArrayList<Integer> pointArray = new ArrayList<>();
                     pointArray.add(x1 - i);
                     pointArray.add(y1);
@@ -98,8 +98,8 @@ public class mapPoint {
 
             }
 
-            else if (y2 > y1) {
-                while (i < Math.abs(y1 - y2)) {
+            else if (x2 > x1) {
+                while (i < Math.abs(x1 - x2)) {
                     ArrayList<Integer> pointArray = new ArrayList<>();
                     pointArray.add(x1 - i);
                     pointArray.add(y1);
