@@ -1,4 +1,5 @@
 package com.example.adam.myfirstapp;
+import android.util.Log;
 
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class aStar {
     public int debugx = 0;
     public int debugy = 0;
     public mapPoint mP = new mapPoint();
+    private static final String TAG = MyActivity.class.getSimpleName();
 
     public void findShortestPath() {
         boolean pointFound = false;
@@ -54,6 +56,9 @@ public class aStar {
                 ArrayList<Integer> point = new ArrayList<>();
                 point.add(pnt.get(0));
                 point.add(pnt.get(1));
+                debugx = pnt.get(0);
+                debugy = pnt.get(1);
+                //Log.d(TAG, "debugx: " + debugx + ", DebugY: " + debugy);
                 if (point == endPoint) {
                     reconstructPathCoords(pnt);
                     debugInt = 27;

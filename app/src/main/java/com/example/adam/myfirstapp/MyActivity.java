@@ -178,7 +178,7 @@ public class MyActivity extends ActionBarActivity {
         pnt.add(aS.debugx);
         pnt.add(aS.debugy);
         ArrayList<ArrayList<Integer>> nbors = mP.getNeighbors(pnt);
-        t.setText("debugInt: " + aS.debugInt + " gVAl: " + aS.g + " end point: " + endPoint.get(0) + " , " + endPoint.get(1));
+        t.setText("debugInt: " + aS.debugInt + " gVAl: " + aS.g + " end point: " + endPoint.get(0) + " , " + endPoint.get(1) + " , point: x: " + aS.debugx + " , " + aS.debugy);
         while (i < aS.shortestPath.size()) {
             ArrayList<Integer> pntA = aS.shortestPath.get(i);
             ArrayList<Integer> pntB = aS.shortestPath.get(i++);
