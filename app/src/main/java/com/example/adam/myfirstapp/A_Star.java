@@ -10,6 +10,5 @@ public class A_Star {
         ArrayList<ArrayList<Integer>> ClosedSet = new ArrayList<>();           // The set of nodes already evaluated
         ArrayList<ArrayList<Integer>> OpenSet = new ArrayList<>();             // The set of nodes to be evaluated
         OpenSet.add(start);                  // Add start value initially;
-
     }
 }
