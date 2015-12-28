@@ -35,7 +35,10 @@ public class MyActivity extends ActionBarActivity {
     public mapPoint mP = new mapPoint();
     public boolean endPointSet = false;
     public boolean startPointSet = false;
-    @Override
+    private SchoolMap map = new SchoolMap();
+    private PathFinder finder = null;
+    private Pathway path;
+    private DrawImageView drawView = null;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
@@ -46,8 +49,8 @@ public class MyActivity extends ActionBarActivity {
         mP.addPoint(56, 47, "A107");
         mP.addPoint(56, 56, "A106");
         mP.addPoint(56, 79, "A104");
-        mP.addPoint(77, 62, "A105");
-        mP.addPoint(77, 64, "A108");
+        mP.addPoint(77, 65, "A105");
+        mP.addPoint(77, 63, "A108");
 
 
         setTitle("HSE-Mapping Development Version");
@@ -96,7 +99,7 @@ public class MyActivity extends ActionBarActivity {
 
         Spinner endSpinner = (Spinner) findViewById(R.id.endSpinner);
 
-        String[] endItems = new String[] { "A104", "A105", "A106", "A107", "A108" };
+        String[] endItems = new String[] { "A105" , "A104", "A106", "A107", "A108" };
 
         ArrayAdapter<String> endAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, endItems);
@@ -165,31 +168,33 @@ public class MyActivity extends ActionBarActivity {
     }
 
     public void mapPath() {
-        aStar aS = new aStar();
-        aS.mP = mP;
-        TextView t=(TextView)findViewById(R.id.textView);
-        aS.startPoint = startPoint;
-        aS.endPoint = endPoint;
-        aS.findShortestPath();
-        DrawImageView drawView = (DrawImageView) findViewById(R.id.view);
-        int i = 0;
+        Log.d("LOG", "Map path called");
+        if (drawView == null) {
+            drawView = (DrawImageView) findViewById(R.id.view);
+        }
+        Log.d("LOG", "0");
+        if (finder == null) {
+            finder = new AStarPathFinder(map, 5000, false);
+        }
+        Log.d("LOG", "1");
+        path = null;
+        map.clearVisited();
+        Log.d("LOG", "2");
+        path = finder.findPath(new UnitMover(0), startPoint.get(0), startPoint.get(1), endPoint.get(0), endPoint.get(1));
+        Log.d("LOG", "3");
 
-        ArrayList<Integer> pnt = new ArrayList<>();
-        pnt.add(aS.debugx);
-        pnt.add(aS.debugy);
-        ArrayList<ArrayList<Integer>> nbors = mP.getNeighbors(pnt);
-        t.setText("debugInt: " + aS.debugInt + " gVAl: " + aS.g + " end point: " + endPoint.get(0) + " , " + endPoint.get(1) + " , point: x: " + aS.debugx + " , " + aS.debugy);
-        while (i < aS.shortestPath.size()) {
-            ArrayList<Integer> pntA = aS.shortestPath.get(i);
-            ArrayList<Integer> pntB = aS.shortestPath.get(i++);
-            drawView.x = pntA.get(0);
-            drawView.y = pntA.get(1);
-            drawView.x2 = pntB.get(0);
-            drawView.y2 = pntB.get(1);
-            drawView.invalidate();
-            drawView.drawLine = true;
-            i++;
-
+        if (path != null) {
+            for (int i=0;i<path.getLength();i++) {
+                if (i + 1 < path.getLength()) {
+                    drawView.x = path.getStep(i).getX();
+                    drawView.y = path.getStep(i).getY();
+                    drawView.x2 = path.getStep(i + 1).getX();
+                    drawView.y2 = path.getStep(i + 1).getY();
+                    drawView.invalidate();
+                    drawView.drawLine = true;
+                    Log.d("LOG", "x: " + path.getStep(i).getX() + " y: " + path.getStep(i).getY());
+                }
+             }
         }
     }
 }

@@ -9,14 +9,14 @@ import java.util.ArrayList;
  *
  * @author Kevin Glass
  */
-public class Path {
+public class Pathway {
     /** The list of steps building up this path */
     private ArrayList steps = new ArrayList();
 
     /**
      * Create an empty path
      */
-    public Path() {
+    public Pathway() {
 
     }
 

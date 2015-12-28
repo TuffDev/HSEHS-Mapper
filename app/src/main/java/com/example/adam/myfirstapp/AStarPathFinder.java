@@ -2,6 +2,8 @@ package com.example.adam.myfirstapp;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import android.util.Log;
+
 
 
 
@@ -66,10 +68,11 @@ public class AStarPathFinder implements PathFinder {
     /**
      * @see PathFinder#findPath(Mover, int, int, int, int)
      */
-    public Path findPath(Mover mover, int sx, int sy, int tx, int ty) {
+    public Pathway findPath(Mover mover, int sx, int sy, int tx, int ty) {
         // easy first check, if the destination is blocked, we can't get there
 
         if (map.blocked(mover, tx, ty)) {
+            Log.d("LOG: ", "first point is blocked");
             return null;
         }
 
@@ -84,15 +87,17 @@ public class AStarPathFinder implements PathFinder {
 
         nodes[tx][ty].parent = null;
 
-        // while we haven'n't exceeded our max search depth
+        // while we haven't exceeded our max search depth
         int maxDepth = 0;
         while ((maxDepth < maxSearchDistance) && (open.size() != 0)) {
+            Log.d("LOG", "Search started");
             // pull out the first node in our open list, this is determined to
 
             // be the most likely to be the next step based on our heuristic
 
             Node current = getFirstInOpen();
             if (current == nodes[tx][ty]) {
+                Log.d("LOG", "start is same as end");
                 break;
             }
 
@@ -111,7 +116,7 @@ public class AStarPathFinder implements PathFinder {
                         continue;
                     }
 
-                    // if we're not allowing diaganol movement then only
+                    // if we're not allowing diagonal movement then only
 
                     // one of x or y can be set
 
@@ -129,7 +134,7 @@ public class AStarPathFinder implements PathFinder {
                     if (isValidLocation(mover,sx,sy,xp,yp)) {
                         // the cost to get to this node is cost the current plus the movement
 
-                        // cost to reach this node. Note that the heursitic value is only used
+                        // cost to reach this node. Note that the heuristic value is only used
 
                         // in the sorted open list
 
@@ -140,7 +145,7 @@ public class AStarPathFinder implements PathFinder {
                         // if the new cost we've determined for this node is lower than
 
                         // it has been previously makes sure the node hasn'e've
-                        // determined that there might have been a better path to get to
+                        // determined that there might have been a better pathway to get to
 
                         // this node so it needs to be re-evaluated
 
@@ -170,30 +175,31 @@ public class AStarPathFinder implements PathFinder {
             }
         }
 
-        // since we'e've run out of search
-        // there was no path. Just return null
+        // since we've run out of search
+        // there was no pathway. Just return null
 
         if (nodes[tx][ty].parent == null) {
+            Log.d("LOG", "ran out of search, no pathway. Loops: " + maxDepth);
             return null;
         }
 
-        // At this point we've definitely found a path so we can uses the parent
+        // At this point we've definitely found a pathway so we can uses the parent
 
         // references of the nodes to find out way from the target location back
 
         // to the start recording the nodes on the way.
 
-        Path path = new Path();
+        Pathway pathway = new Pathway();
         Node target = nodes[tx][ty];
         while (target != nodes[sx][sy]) {
-            path.prependStep(target.x, target.y);
+            pathway.prependStep(target.x, target.y);
             target = target.parent;
         }
-        path.prependStep(sx,sy);
+        pathway.prependStep(sx,sy);
 
-        // thats it, we have our path
-
-        return path;
+        // thats it, we have our pathway
+        Log.d("LOG: ", "Pathway found");
+        return pathway;
     }
 
     /**
