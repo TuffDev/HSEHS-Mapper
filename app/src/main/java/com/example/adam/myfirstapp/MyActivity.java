@@ -1,7 +1,7 @@
 package com.example.adam.myfirstapp;
 
-import android.graphics.Point;
-import android.media.Image;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -11,20 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ImageView;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.view.MotionEvent;
 import android.view.View;
 import android.content.Context;
-import android.app.Application;
-import android.app.Activity;
 import android.content.res.Resources;
-
 import java.util.ArrayList;
 
 public class MyActivity extends ActionBarActivity {
@@ -44,6 +36,7 @@ public class MyActivity extends ActionBarActivity {
         setContentView(R.layout.activity_my);
         final TextView t=(TextView)findViewById(R.id.textView);
 
+
         mP.addLineArray(57, 57, 29, 353);
         mP.addLineArray(57, 312, 63, 63);
         mP.addPoint(56, 47, "A107");
@@ -59,7 +52,7 @@ public class MyActivity extends ActionBarActivity {
         //************START SPINNER***************************************************
         Spinner startSpinner = (Spinner) findViewById(R.id.startSpinner);
 
-        String[] startItems = new String[] { "A104", "A105", "A106", "A107", "A108" };
+        String[] startItems = new String[] { "Select Start", "A104", "A105", "A106", "A107", "A108" };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, startItems);
@@ -69,21 +62,15 @@ public class MyActivity extends ActionBarActivity {
         startSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String roomNum = (String) parent.getItemAtPosition(position);
-                t.setText("Item Selected: " + roomNum);
-                int roomIndex = mP.rooms.indexOf(roomNum);
-                startPointSet = true;
-                startPoint = mP.roomCoords.get(roomIndex);
-                if (endPointSet) {
-                    mapPath();
-                    /*
-                    ArrayList<Integer> pnt = new ArrayList<>();
-                    pnt.add(56);
-                    pnt.add(47);
-                    ArrayList<ArrayList<Integer>> nbors = new ArrayList<>();
-                    nbors = mP.getNeighbors(pnt);
-                    t.setText("Nbors x" + nbors.get(0).get(0) + "  y:" + nbors.get(0).get(1)); */
-
+                if (position != 0) {
+                    String roomNum = (String) parent.getItemAtPosition(position);
+                    t.setText("Item Selected: " + roomNum);
+                    int roomIndex = mP.rooms.indexOf(roomNum);
+                    startPointSet = true;
+                    startPoint = mP.roomCoords.get(roomIndex);
+                    if (endPointSet) {
+                        mapPath();
+                    }
                 }
             }
 
@@ -99,7 +86,7 @@ public class MyActivity extends ActionBarActivity {
 
         Spinner endSpinner = (Spinner) findViewById(R.id.endSpinner);
 
-        String[] endItems = new String[] { "A105" , "A104", "A106", "A107", "A108" };
+        String[] endItems = new String[] { "Select End", "A105" , "A104", "A106", "A107", "A108" };
 
         ArrayAdapter<String> endAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, endItems);
@@ -109,14 +96,15 @@ public class MyActivity extends ActionBarActivity {
         endSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String roomNum = (String) parent.getItemAtPosition(position);
-                t.setText("Item Selected: " + roomNum);
-                int roomIndex = mP.rooms.indexOf(roomNum);
-                endPoint = mP.roomCoords.get(roomIndex);
-                endPointSet = true;
-                if (startPointSet) { //start Point is set
-                    mapPath();
-
+                if (position != 0) {
+                    String roomNum = (String) parent.getItemAtPosition(position);
+                    t.setText("Item Selected: " + roomNum);
+                    int roomIndex = mP.rooms.indexOf(roomNum);
+                    endPoint = mP.roomCoords.get(roomIndex);
+                    endPointSet = true;
+                    if (startPointSet) { //start Point is set
+                        mapPath();
+                    }
                 }
             }
 
@@ -167,7 +155,26 @@ public class MyActivity extends ActionBarActivity {
 
     }
 
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        int width = drawable.getIntrinsicWidth();
+        width = width > 0 ? width : 1;
+        int height = drawable.getIntrinsicHeight();
+        height = height > 0 ? height : 1;
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+
     public void mapPath() {
+
         Log.d("LOG", "Map path called");
         if (drawView == null) {
             drawView = (DrawImageView) findViewById(R.id.view);
@@ -183,18 +190,9 @@ public class MyActivity extends ActionBarActivity {
         path = finder.findPath(new UnitMover(0), startPoint.get(0), startPoint.get(1), endPoint.get(0), endPoint.get(1));
         Log.d("LOG", "3");
 
-        if (path != null) {
-            for (int i=0;i<path.getLength();i++) {
-                if (i + 1 < path.getLength()) {
-                    drawView.x = path.getStep(i).getX();
-                    drawView.y = path.getStep(i).getY();
-                    drawView.x2 = path.getStep(i + 1).getX();
-                    drawView.y2 = path.getStep(i + 1).getY();
-                    drawView.invalidate();
-                    drawView.drawLine = true;
-                    Log.d("LOG", "x: " + path.getStep(i).getX() + " y: " + path.getStep(i).getY());
-                }
-             }
+        drawView.setPath(path);
+        drawView.invalidate();
+        drawView.drawLine = true;
+
         }
     }
-}
