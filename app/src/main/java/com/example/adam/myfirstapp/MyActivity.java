@@ -31,7 +31,7 @@ public class MyActivity extends ActionBarActivity {
     private SchoolMap map = new SchoolMap();
     private PathFinder finder = null;
     private Pathway path;
-    private DrawImageView drawView = null;
+    private ImageZoomView drawView = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,7 +182,7 @@ public class MyActivity extends ActionBarActivity {
 
         Log.d("LOG", "Map path called");
         if (drawView == null) {
-            drawView = (DrawImageView) findViewById(R.id.view);
+            drawView = (ImageZoomView) findViewById(R.id.view);
         }
         Log.d("LOG", "0");
         if (finder == null) {

@@ -15,7 +15,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <com.example.adam.myfirstapp.DrawImageView
+    <com.example.adam.myfirstapp.ImageZoomView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/view"
@@ -44,16 +44,5 @@
         android:layout_toRightOf="@+id/textView"
         android:layout_toEndOf="@+id/textView" />
 
-    <com.example.adam.myfirstapp.ImageZoomView
-        android:id="@+id/Zoomview"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="0.61"
-        android:src="@drawable/buildingdownstairsnob"
-        android:scaleType="fitCenter"
-        android:layout_alignTop="@+id/view"
-        android:layout_alignRight="@+id/view"
-        android:layout_alignEnd="@+id/view"
-        android:layout_alignBottom="@+id/view" />
 
 </RelativeLayout>

@@ -2,7 +2,9 @@ package com.example.adam.myfirstapp;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -46,6 +48,12 @@ public class ImageZoomView extends ImageView
     private float displayWidth;
     private float displayHeight;
 
+    private Paint currentPaint;
+    public boolean drawLine = false;
+    public float y;
+    public float x;
+    public Pathway pathway;
+
     public ImageZoomView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -56,6 +64,14 @@ public class ImageZoomView extends ImageView
 
         displayWidth = display.getWidth();
         displayHeight = display.getHeight();
+
+        currentPaint = new Paint();
+        currentPaint.setDither(true);
+        currentPaint.setColor(0xFF00CC00);  // alpha.r.g.b
+        currentPaint.setStyle(Paint.Style.FILL);
+        currentPaint.setStrokeJoin(Paint.Join.BEVEL);
+        currentPaint.setStrokeCap(Paint.Cap.SQUARE);
+        currentPaint.setStrokeWidth(1);
     }
 
     @Override
@@ -133,6 +149,19 @@ public class ImageZoomView extends ImageView
     @Override
     public void onDraw(Canvas canvas) {
 
+        if (drawLine) {
+            if (pathway != null) {
+                for (int i = 0; i < pathway.getLength(); i++) {
+
+                    x = pathway.getStep(i).getX();
+                    y = pathway.getStep(i).getY();
+                    canvas.drawCircle(x - 11, y + 40, 3, currentPaint);
+                    Log.d("LOG: ", "Dot drawn");
+
+                }
+            }
+        }
+
         canvas.save();
 
 //If translateX times -1 is lesser than zero, let’s set it to zero. This takes care of the left bound
@@ -168,5 +197,9 @@ public class ImageZoomView extends ImageView
             scaleFactor = Math.max(MIN_ZOOM, Math.min(scaleFactor, MAX_ZOOM));
             return true;
         }
+    }
+
+    public void setPath(Pathway path) {
+        pathway = path;
     }
 }
