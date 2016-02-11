@@ -33,25 +33,6 @@ public class SchoolMap implements TileBasedMap {
      * Create a new test map with some default configuration
      */
     public SchoolMap() {
-        // create some test data
-
-        /*
-        fillArea(0,0,5,5,WATER);
-        fillArea(0,5,3,10,WATER);
-        fillArea(0,5,3,10,WATER);
-        fillArea(0,15,7,15,WATER);
-        fillArea(7,26,22,4,WATER);
-
-        fillArea(17,5,10,3,TREES);
-        fillArea(20,8,5,3,TREES);
-
-        fillArea(8,2,7,3,TREES);
-        fillArea(10,5,3,3,TREES);
-
-        units[15][15] = TANK;
-        units[2][7] = BOAT;
-        units[20][25] = PLANE;
-        */
 
         //initialize whole map as rooms
         fillArea(0,0,WIDTH,HEIGHT,ROOM);
